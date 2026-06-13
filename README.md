@@ -250,3 +250,14 @@ Wraith is loaded into a RAM-backed file descriptor via `memfd_create` — the bi
 Cleanup removes: the Wraith process, the dropped binary, all persistence entries, and the manifest. Summoner always prompts for confirmation before destructive actions.
 
 **Automatic cleanup on exit:** pressing `Ctrl+C` while Summoner is running automatically cleans up every active scenario before exiting. Manifests are stored in `~/.summoner/` and can be used to clean up manually if Summoner exits unexpectedly.
+
+---
+
+## Changelog
+
+### v1.01
+- **Fix: PPID spoof to SYSTEM-owned processes (e.g. `svchost.exe`)** — Summoner now enables `SeDebugPrivilege` before opening the target process handle, which is required for processes running as SYSTEM even when Summoner is elevated. Previously these targets always fell back to orphan mode with an "Access is denied" warning.
+- **Fix: PPL-protected process fallback** — When spoofing a parent by name (e.g. `svchost.exe`), Summoner now iterates all running instances and skips any that are Protected Process Light (PPL). Previously it would fail if the first matching instance was PPL-protected.
+
+### v1.0
+- Initial release.
